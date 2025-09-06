@@ -1,125 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Steel & Crete - Structural Solutions LLP</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Studio Portfolio</title>
+  <style>
+    :root{
+      --bg: #ffffff; --fg: #111111; --muted:#555555;
+      --glass: rgba(255,255,255,.7);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;width:100%;scroll-behavior:smooth;background:var(--bg);color:var(--fg);font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial;overflow-x:hidden}
+
+    /* Header / Nav */
+    .site-header{position:absolute;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:linear-gradient(to bottom, rgba(255,255,255,.9), rgba(255,255,255,0));}
+    .brand{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--glass);backdrop-filter: blur(6px);border-radius:12px;transition:opacity 1s ease-in-out}
+    .brand img{height:60px;width:60px;object-fit:contain;transition:opacity 0.6s ease-in-out}
+    .brand .name{font-weight:700;letter-spacing:.4px;font-size:1.25rem;transition:opacity 0.6s ease-in-out,color 0.6s ease-in-out}
+    .fade-out{opacity:0}
+    .fade-in{opacity:1}
+
+    .nav{display:flex;align-items:center;gap:26px}
+    .nav a{color:var(--fg);text-decoration:none;font-weight:600;opacity:.9}
+    .nav a:hover{opacity:1}
+    .menu-btn{display:none;background:none;border:0;color:var(--fg);font-size:28px}
+
+    /* Hero Slider */
+    .hero{position:relative;height:100vh;width:100vw;overflow:hidden}
+    .slides{height:100%;width:100%;position:relative}
+    .slide{position:absolute;inset:0;opacity:0;transition:opacity 900ms ease;}
+    .slide img{width:100%;height:100%;object-fit:cover;transform:scale(1);transition:transform 8s ease, opacity 900ms ease;}
+    .slide.active{opacity:1;z-index:1}
+    .slide.active img{transform:scale(1.08)}
+    .slide::after{content:"";position:absolute;inset:0;background:linear-gradient(to top, rgba(255,255,255,.55) 10%, rgba(255,255,255,.25) 50%, rgba(255,255,255,.15) 100%)}
+
+    .hero-cta{position:absolute;bottom:8vh;left:50%;transform:translateX(-50%);text-align:center;z-index:5;color:#000}
+    .hero-cta h1{font-size:clamp(28px,4vw,56px);font-weight:800;letter-spacing:.4px}
+    .hero-cta p{margin-top:10px;color:var(--muted)}
+
+    .dots{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:6}
+    .dot{width:10px;height:10px;border-radius:999px;background:rgba(0,0,0,.35);cursor:pointer}
+    .dot.active{background:#000}
+
+    section{padding:80px 6vw;background:var(--bg)}
+    .section-title{font-size:clamp(22px,2.6vw,36px);margin-bottom:18px;color:var(--fg)}
+    .muted{color:var(--muted)}
+
+    /* Responsive */
+    @media (max-width: 860px){
+      .nav{display:none}
+      .menu-btn{display:block}
+      .nav.open{position:absolute;top:64px;right:16px;display:flex;flex-direction:column;gap:16px;background:var(--glass);backdrop-filter: blur(8px);padding:16px 18px;border-radius:12px}
+    }
+  </style>
 </head>
 <body>
-
-  <!-- Navbar -->
-<header id="navbar">
-  <div class="logo">
-    <img src="images/Logo .jpg" alt="Steel & Crete Logo">
-  </div>
-  <nav>
-    <ul>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#people">People</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
-  <button id="darkToggle">🌙</button>
-</header>
-
-
-  <!-- Hero Slider -->
-  <section class="hero-slider" id="hero">
-    <div class="slides fade">
-      <img src="images/1.jpeg" alt="Engineering">
-      <div class="text">Tailored Designs for Structures</div>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="brand" id="brandBox">
+      <a href="#home"><img id="brandLogo" src="Logo .jpg" alt="Studio Logo" class="fade-in"></a>
+      <span class="name fade-in" id="brandName">Steel & Crete</span>
     </div>
-    <div class="slides fade">
-      <img src="images/2.jpeg" alt="Architecture">
-      <div class="text">Architectural Components & Solutions</div>
-    </div>
-    <div class="slides fade">
-      <img src="images/3.jpeg" alt="Innovation">
-      <div class="text">Cutting Edge Engineering Solutions</div>
-    </div>
-    <div class="slides fade">
-      <img src="images/4.jpeg" alt="Innovation">
-      <div class="text">Cutting Edge Engineering Solutions</div>
-    </div>
+    <button class="menu-btn" id="menuBtn">☰</button>
+    <nav class="nav" id="siteNav">
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-    <a class="prev">&#10094;</a>
-    <a class="next">&#10095;</a>
-
-    <div class="dots"></div>
+  <!-- HERO Fullscreen Slider -->
+  <section class="hero" id="home">
+    <div class="slides" id="slides">
+      <figure class="slide active"><img src="images/1.jpeg" alt="Slide 1"></figure>
+      <figure class="slide"><img src="images/2.jpeg" alt="Slide 2"></figure>
+      <figure class="slide"><img src="images/3.jpeg" alt="Slide 3"></figure>
+    </div>
+    <div class="hero-cta">
+      <h1>Architecture • Innovation</h1>
+      <p class="muted">Sustainable design and crafted spaces</p>
+    </div>
+    <div class="dots" id="dots"></div>
   </section>
 
-  <!-- Services -->
-  <section id="services" class="reveal">
-    <h2>Our Services</h2>
-    <p>We offer consulting for all civil & structural engineering applications including retrofitting, vibration studies, and sustainable designs.</p>
+  <!-- Placeholder Sections -->
+  <section id="about">
+    <h2 class="section-title">About</h2>
+    <p class="muted">This is the about section. Replace with real content.</p>
+  </section>
+  <section id="services">
+    <h2 class="section-title">Services</h2>
+    <p class="muted">Our services description goes here.</p>
+  </section>
+  <section id="contact">
+    <h2 class="section-title">Contact</h2>
+    <p class="muted">Contact form or details here.</p>
   </section>
 
-  <!-- Projects -->
-  <section id="projects" class="reveal">
-    <h2>Projects</h2>
-    <p>Executed projects like nuclear power plants, high rise buildings, pre-engineered structures, bridges and machine foundations.</p>
-  </section>
+  <script>
+    const menuBtn=document.getElementById('menuBtn');
+    const siteNav=document.getElementById('siteNav');
+    menuBtn.addEventListener('click',()=>siteNav.classList.toggle('open'));
 
-  <!-- About -->
-  <section id="about" class="reveal">
-    <h2>About Us</h2>
-    <p>Steel & Crete LLP Structural Solutions is an LLP located in Ernakulam, offering high end engineering solutions. In keeping with the world’s recent industrial 
-developments, Steel & Crete offer consulting services to all types of civil & structural engineering applications. The team members have worked with many 
-of the renowned architects and clients always striving to find better methods to tackle the engineering challenges. Our Engineers were involved in 
-prestigious projects in India and abroad, expertise in the field of structural design, retrofitting, building construction and vibration problems and have also 
-executed a wide range of projects like nuclear power plants, high rise buildings, pre-engineered structures, bridges and machine foundations.</p>
-  </section>
-  <!-- Our People -->
-<section id="people" class="reveal team">
-  <h2>Our People</h2>
-  <div class="team-container">
+    const slides=document.querySelectorAll('.slide');
+    const dotsBox=document.getElementById('dots');
+    const brandLogo=document.getElementById('brandLogo');
+    const brandName=document.getElementById('brandName');
 
-    <div class="team-member">
-      <img src="images/1.jpeg" alt="Dr. Dhileep M. Kaviyad">
-      <h3>Dr. Dhileep M. Kaviyad</h3>
-      <p>
-        With nearly 25 years of experience in structural design and retrofitting, he has worked on RCC, PSC, and steel buildings,
-        tanks, towers, machine foundations, and industrial & power plant structures. Expertise includes aseismic design of nuclear
-        plants, vibration studies, and sustainable composite structures.
-      </p>
-    </div>
+    const logos=['Logo .jpg','logo-dark.png','Logo .jpg'];
+    const names=['Steel & Crete','Steel & Crete','Steel & Crete'];
+    const colors=['#111111','#1e3a8a','#b91c1c']; // text colors per slide
 
-    <div class="team-member">
-      <img src="images/2.jpeg" alt="Danial Vincent Aloor">
-      <h3>Daniel Vincent Aloor</h3>
-      <p>
-        A dedicated Structural Engineer with over 15 years of experience in RCC and steel structures. Skilled in residential,
-        commercial, and industrial projects, he emphasizes seismic resilience and precision to deliver innovative engineering solutions.
-      </p>
-    </div>
+    let idx=0; let timer;
 
-    <div class="team-member">
-      <img src="images/3.jpeg" alt="Ramya K M">
-      <h3>Ramya K M</h3>
-      <p>
-        Experienced in architectural structural and non-structural components using steel and other materials.
-        Brings clarity, creativity, and reliability to engineering challenges, ensuring strong collaboration with architects and contractors.
-      </p>
-    </div>
+    function makeDots(){
+      slides.forEach((_,i)=>{
+        const d=document.createElement('button');
+        d.className='dot';
+        d.addEventListener('click',()=>show(i));
+        dotsBox.appendChild(d);
+      });
+    }
 
-  </div>
-</section>
+    function updateDots(){
+      [...dotsBox.children].forEach((d,i)=>d.classList.toggle('active',i===idx));
+    }
 
+    function updateBrand(){
+      brandLogo.classList.remove('fade-in');
+      brandName.classList.remove('fade-in');
+      brandLogo.classList.add('fade-out');
+      brandName.classList.add('fade-out');
 
-  <!-- Contact -->
-  <section id="contact" class="reveal">
-    <h2>Contact Us</h2>
-    <p>Email: projects@gmail.com (Structural Design)</p>
-    <p>Email: steelandcrete@gmail.com (Job Opportunities)</p>
-  </section>
+      setTimeout(()=>{
+        brandLogo.src=logos[idx%logos.length];
+        brandName.textContent=names[idx%names.length];
+        brandName.style.color=colors[idx%colors.length];
+        brandLogo.classList.remove('fade-out');
+        brandName.classList.remove('fade-out');
+        brandLogo.classList.add('fade-in');
+        brandName.classList.add('fade-in');
+      },400);
+    }
 
-  <footer>
-    <p>© 2025 Steel & Crete - Structural Solutions LLP</p>
-  </footer>
+    function show(i){
+      slides[idx].classList.remove('active');
+      idx=(i+slides.length)%slides.length;
+      slides[idx].classList.add('active');
+      updateDots();
+      updateBrand();
+      restart();
+    }
 
-  <script src="script.js"></script>
+    function next(){show(idx+1)}
+    function restart(){clearInterval(timer);timer=setInterval(next,8000)}
+
+    makeDots();
+    updateDots();
+    updateBrand();
+    timer=setInterval(next,4000);
+  </script>
 </body>
 </html>
