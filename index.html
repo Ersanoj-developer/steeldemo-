@@ -32,7 +32,7 @@
     }
 
     /* Slider */
-    /* Slider */
+   /* Slider */
 .slider {
   position: relative;
   height: 100vh;
@@ -195,6 +195,33 @@ nav a {
     display: flex;
   }
 }
+.overlay-text {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 3px 8px rgba(0,0,0,0.7);
+  opacity: 0;
+  transition: opacity 0.8s ease, color 0.5s ease;
+}
+.slide.active .overlay-text {
+  opacity: 1;
+}
+
+.overlay-text.fade-out {
+  opacity: 0 !important;
+}
+.slide {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.slide.active {
+  opacity: 1;
+  z-index: 1;
+  transition-delay: 0.2s; /* image waits a bit before appearing */
+}
 
   </style>
 </head>
@@ -250,7 +277,7 @@ nav a {
 
   const logos=['logo.png','logo.png','logo.png'];
   const names=['Steel & Crete Structural Solution LLP','Steel & Crete Structural Solution LLP','Steel & Crete Structural Solution LLP'];
-  const colors=['black','orange','blue'];
+  const colors=['white','white','white'];
 
   let idx=0; let timer;
 
@@ -305,10 +332,29 @@ const navMenu = document.getElementById('navMenu');
 menuToggle.addEventListener('click', () => {
   navMenu.classList.toggle('active');
 });
+function show(i){
+  const currentText = slides[idx].querySelector('.overlay-text');
+  
+  // fade out current text first
+  currentText.classList.add('fade-out');
+
+  // wait until fade-out is done before switching slides
+  setTimeout(() => {
+    slides[idx].classList.remove('active');
+    currentText.classList.remove('fade-out'); // reset for next use
+
+    idx = (i + slides.length) % slides.length;
+    slides[idx].classList.add('active');
+
+    updateDots();
+    updateBrand();
+  }, 800); // delay matches fade-out duration (0.8s)
+
+  restart();
+}
+
 
 </script>
 
 </body>
 </html>
-
-
