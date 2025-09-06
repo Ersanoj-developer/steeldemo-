@@ -2,163 +2,257 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Studio Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Company Slider</title>
   <style>
-    :root{
-      --bg: #ffffff; --fg: #111111; --muted:#555555;
-      --glass: rgba(255,255,255,.7);
+    *{margin:0;padding:0;box-sizing:border-box}
+    body,html{height:100%;font-family:Arial, sans-serif;overflow-x:hidden;}
+
+    /* Header */
+    header{
+      position:absolute;top:0;left:0;right:0;z-index:20;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:15px 40px;
+      background:transparent;
+      backdrop-filter:none;
     }
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%;width:100%;scroll-behavior:smooth;background:var(--bg);color:var(--fg);font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial;overflow-x:hidden}
-
-    /* Header / Nav */
-    .site-header{position:absolute;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:linear-gradient(to bottom, rgba(255,255,255,.9), rgba(255,255,255,0));}
-    .brand{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--glass);backdrop-filter: blur(6px);border-radius:12px;transition:opacity 1s ease-in-out}
-    .brand img{height:60px;width:60px;object-fit:contain;transition:opacity 0.6s ease-in-out}
-    .brand .name{font-weight:700;letter-spacing:.4px;font-size:1.25rem;transition:opacity 0.6s ease-in-out,color 0.6s ease-in-out}
-    .fade-out{opacity:0}
-    .fade-in{opacity:1}
-
-    .nav{display:flex;align-items:center;gap:26px}
-    .nav a{color:var(--fg);text-decoration:none;font-weight:600;opacity:.9}
-    .nav a:hover{opacity:1}
-    .menu-btn{display:none;background:none;border:0;color:var(--fg);font-size:28px}
-
-    /* Hero Slider */
-    .hero{position:relative;height:100vh;width:100vw;overflow:hidden}
-    .slides{height:100%;width:100%;position:relative}
-    .slide{position:absolute;inset:0;opacity:0;transition:opacity 900ms ease;}
-    .slide img{width:100%;height:100%;object-fit:cover;transform:scale(1);transition:transform 8s ease, opacity 900ms ease;}
-    .slide.active{opacity:1;z-index:1}
-    .slide.active img{transform:scale(1.08)}
-    .slide::after{content:"";position:absolute;inset:0;background:linear-gradient(to top, rgba(255,255,255,.55) 10%, rgba(255,255,255,.25) 50%, rgba(255,255,255,.15) 100%)}
-
-    .hero-cta{position:absolute;bottom:8vh;left:50%;transform:translateX(-50%);text-align:center;z-index:5;color:#000}
-    .hero-cta h1{font-size:clamp(28px,4vw,56px);font-weight:800;letter-spacing:.4px}
-    .hero-cta p{margin-top:10px;color:var(--muted)}
-
-    .dots{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:6}
-    .dot{width:10px;height:10px;border-radius:999px;background:rgba(0,0,0,.35);cursor:pointer}
-    .dot.active{background:#000}
-
-    section{padding:80px 6vw;background:var(--bg)}
-    .section-title{font-size:clamp(22px,2.6vw,36px);margin-bottom:18px;color:var(--fg)}
-    .muted{color:var(--muted)}
-
-    /* Responsive */
-    @media (max-width: 860px){
-      .nav{display:none}
-      .menu-btn{display:block}
-      .nav.open{position:absolute;top:64px;right:16px;display:flex;flex-direction:column;gap:16px;background:var(--glass);backdrop-filter: blur(8px);padding:16px 18px;border-radius:12px}
+    .brand{display:flex;align-items:center;gap:10px;}
+    .brand img{height:60px;width:60px;object-fit:contain;}
+    .brand span{
+      font-size:1.5rem;
+      font-weight:bold;
+      transition:color 0.5s ease;
     }
+    nav a{
+      margin-left:25px;
+      text-decoration:none;
+      font-weight:600;
+      color:#fff;
+      text-shadow:0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    /* Slider */
+    .slider{position:relative;height:100vh;width:100%;overflow:hidden;}
+    .slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease;}
+    .slide img{width:100%;height:100%;object-fit:cover;}
+    .slide.active{opacity:1;z-index:1;}
+    .slide.active img{transform:scale(1.08);transition:transform 8s ease;}
+
+    /* Overlay text */
+    .overlay-text{
+      position:absolute;
+      top:50%;left:50%;
+      transform:translate(-50%,-50%);
+      font-size:2.5rem;
+      font-weight:bold;
+      text-align:center;
+      text-shadow:0 3px 8px rgba(0,0,0,0.7);
+      opacity:0;
+      transition:opacity 1s ease, color 0.5s ease;
+    }
+    .slide.active .overlay-text{opacity:1;}
+
+    /* Dots */
+    .dots{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:10;}
+    .dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.7);cursor:pointer;}
+    .dot.active{background:#fff;}
+
+    /* Base styles (already in your file) */
+
+/* Overlay text responsiveness */
+.overlay-text {
+  font-size: 2.5rem;
+}
+@media (max-width: 1024px) {
+  .overlay-text {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 768px) {
+  .overlay-text {
+    font-size: 1.5rem;
+    padding: 0 20px;
+  }
+}
+
+/* Brand responsiveness */
+.brand img {
+  height: 50px;
+  width: 50px;
+}
+.brand span {
+  font-size: 1.2rem;
+}
+@media (max-width: 768px) {
+  .brand img {
+    height: 40px;
+    width: 40px;
+  }
+  .brand span {
+    font-size: 1rem;
+  }
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  gap: 25px;
+}
+nav a {
+  font-size: 1rem;
+}
+
+/* Hamburger for mobile */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+.menu-toggle span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background: #fff;
+  transition: all 0.3s ease;
+}
+
+/* Hide nav on mobile by default */
+@media (max-width: 768px) {
+  nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 40px;
+    background: rgba(0,0,0,0.7);
+    padding: 15px;
+    border-radius: 8px;
+  }
+  nav a {
+    color: #fff !important;
+    text-shadow: none;
+    padding: 10px 0;
+  }
+  nav.active {
+    display: flex;
+  }
+  .menu-toggle {
+    display: flex;
+  }
+}
+
   </style>
 </head>
 <body>
-  <!-- Header -->
-  <header class="site-header">
-    <div class="brand" id="brandBox">
-      <a href="#home"><img id="brandLogo" src="Logo .jpg" alt="Studio Logo" class="fade-in"></a>
-      <span class="name fade-in" id="brandName">Steel & Crete</span>
-    </div>
-    <button class="menu-btn" id="menuBtn">☰</button>
-    <nav class="nav" id="siteNav">
-      <a href="#about">About</a>
-      <a href="#services">Services</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
 
-  <!-- HERO Fullscreen Slider -->
-  <section class="hero" id="home">
-    <div class="slides" id="slides">
-      <figure class="slide active"><img src="images/1.jpeg" alt="Slide 1"></figure>
-      <figure class="slide"><img src="images/2.jpeg" alt="Slide 2"></figure>
-      <figure class="slide"><img src="images/3.jpeg" alt="Slide 3"></figure>
+    <header>
+  <div class="brand">
+    <img id="brandLogo" src="logo.png" alt="Logo">
+    <span id="brandName">Company One</span>
+  </div>
+  <div class="menu-toggle" id="menuToggle">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <nav id="navMenu">
+    <a href="#services">Services</a>
+    <a href="#projects">Projects</a>
+    <a href="#about">About</a>
+     <a href="#projects">Discuss your Project</a>
+      <a href="contact">Contact</a>
+  </nav>
+</header>
+
+  
+
+  <section class="slider" id="slider">
+    <div class="slide active">
+      <img src="1.jpeg" alt="Slide 1">
+      <div class="overlay-text">Tailored Designs For Structures</div>
     </div>
-    <div class="hero-cta">
-      <h1>Architecture • Innovation</h1>
-      <p class="muted">Sustainable design and crafted spaces</p>
+    <div class="slide">
+      <img src="3.jpeg" alt="Slide 2">
+      <div class="overlay-text">Tailored Designs For Architectural Components</div>
+    </div>
+    <div class="slide">
+      <img src="4.jpeg" alt="Slide 3">
+      <div class="overlay-text">Cutting Edge Engineering Solutions</div>
+    </div>
+    <div class="slide">
+      <img src="2.jpeg" alt="Slide 4">
+      <div class="overlay-text">Turning Dreams into Reality</div>
     </div>
     <div class="dots" id="dots"></div>
   </section>
 
-  <!-- Placeholder Sections -->
-  <section id="about">
-    <h2 class="section-title">About</h2>
-    <p class="muted">This is the about section. Replace with real content.</p>
-  </section>
-  <section id="services">
-    <h2 class="section-title">Services</h2>
-    <p class="muted">Our services description goes here.</p>
-  </section>
-  <section id="contact">
-    <h2 class="section-title">Contact</h2>
-    <p class="muted">Contact form or details here.</p>
-  </section>
+ <script>
+  const slides=document.querySelectorAll('.slide');
+  const dotsBox=document.getElementById('dots');
+  const brandLogo=document.getElementById('brandLogo');
+  const brandName=document.getElementById('brandName');
+  const navLinks=document.querySelectorAll('nav a'); // navigation links
 
-  <script>
-    const menuBtn=document.getElementById('menuBtn');
-    const siteNav=document.getElementById('siteNav');
-    menuBtn.addEventListener('click',()=>siteNav.classList.toggle('open'));
+  const logos=['logo.png','logo.png','logo.png'];
+  const names=['Steel & Crete Structural Solution LLP','Steel & Crete Structural Solution LLP','Steel & Crete Structural Solution LLP'];
+  const colors=['black','orange','blue'];
 
-    const slides=document.querySelectorAll('.slide');
-    const dotsBox=document.getElementById('dots');
-    const brandLogo=document.getElementById('brandLogo');
-    const brandName=document.getElementById('brandName');
+  let idx=0; let timer;
 
-    const logos=['Logo .jpg','logo-dark.png','Logo .jpg'];
-    const names=['Steel & Crete','Steel & Crete','Steel & Crete'];
-    const colors=['#111111','#1e3a8a','#b91c1c']; // text colors per slide
+  function makeDots(){
+    slides.forEach((_,i)=>{
+      const d=document.createElement('span');
+      d.className='dot';
+      d.addEventListener('click',()=>show(i));
+      dotsBox.appendChild(d);
+    });
+  }
 
-    let idx=0; let timer;
+  function updateDots(){
+    [...dotsBox.children].forEach((d,i)=>d.classList.toggle('active',i===idx));
+  }
 
-    function makeDots(){
-      slides.forEach((_,i)=>{
-        const d=document.createElement('button');
-        d.className='dot';
-        d.addEventListener('click',()=>show(i));
-        dotsBox.appendChild(d);
-      });
-    }
+  function updateBrand(){
+    const color=colors[idx%colors.length];
 
-    function updateDots(){
-      [...dotsBox.children].forEach((d,i)=>d.classList.toggle('active',i===idx));
-    }
+    brandLogo.src=logos[idx%logos.length];
+    brandName.textContent=names[idx%names.length];
+    brandName.style.color=color;
 
-    function updateBrand(){
-      brandLogo.classList.remove('fade-in');
-      brandName.classList.remove('fade-in');
-      brandLogo.classList.add('fade-out');
-      brandName.classList.add('fade-out');
+    // overlay text
+    slides[idx].querySelector('.overlay-text').style.color=color;
 
-      setTimeout(()=>{
-        brandLogo.src=logos[idx%logos.length];
-        brandName.textContent=names[idx%names.length];
-        brandName.style.color=colors[idx%colors.length];
-        brandLogo.classList.remove('fade-out');
-        brandName.classList.remove('fade-out');
-        brandLogo.classList.add('fade-in');
-        brandName.classList.add('fade-in');
-      },400);
-    }
+    // nav links
+    navLinks.forEach(link=>{
+      link.style.color=color;
+      link.style.textShadow="0 1px 3px rgba(0,0,0,0.3)";
+    });
+  }
 
-    function show(i){
-      slides[idx].classList.remove('active');
-      idx=(i+slides.length)%slides.length;
-      slides[idx].classList.add('active');
-      updateDots();
-      updateBrand();
-      restart();
-    }
-
-    function next(){show(idx+1)}
-    function restart(){clearInterval(timer);timer=setInterval(next,8000)}
-
-    makeDots();
+  function show(i){
+    slides[idx].classList.remove('active');
+    idx=(i+slides.length)%slides.length;
+    slides[idx].classList.add('active');
     updateDots();
     updateBrand();
-    timer=setInterval(next,4000);
-  </script>
+    restart();
+  }
+
+  function next(){show(idx+1);}
+  function restart(){clearInterval(timer);timer=setInterval(next,6000);}
+
+  makeDots(); updateDots(); updateBrand();
+  timer=setInterval(next,6000);
+
+  const menuToggle = document.getElementById('menuToggle');
+const navMenu = document.getElementById('navMenu');
+
+menuToggle.addEventListener('click', () => {
+  navMenu.classList.toggle('active');
+});
+
+</script>
+
 </body>
 </html>
