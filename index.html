@@ -32,11 +32,65 @@
     }
 
     /* Slider */
-    .slider{position:relative;height:100vh;width:100%;overflow:hidden;}
-    .slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease;}
-    .slide img{width:100%;height:100%;object-fit:cover;}
-    .slide.active{opacity:1;z-index:1;}
-    .slide.active img{transform:scale(1.08);transition:transform 8s ease;}
+    /* Slider */
+.slider {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* ensures image covers the container */
+}
+
+.slide.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+.slide.active img {
+  transform: scale(1.08);
+  transition: transform 8s ease;
+}
+
+/* Responsive slider image adjustments */
+@media (max-width: 1024px) {
+  .slider {
+    height: 70vh; /* reduce height for tablets */
+  }
+  .slide img {
+    object-fit: cover;
+  }
+}
+
+@media (max-width: 768px) {
+  .slider {
+    height: 60vh; /* reduce height for mobile */
+  }
+  .slide img {
+    object-fit: cover;
+  }
+}
+
+@media (max-width: 480px) {
+  .slider {
+    height: 50vh; /* smaller height for very small screens */
+  }
+  .slide img {
+    object-fit: cover;
+  }
+}
+
 
     /* Overlay text */
     .overlay-text{
@@ -256,3 +310,4 @@ menuToggle.addEventListener('click', () => {
 
 </body>
 </html>
+
